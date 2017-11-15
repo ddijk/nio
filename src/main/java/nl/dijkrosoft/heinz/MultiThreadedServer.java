@@ -15,28 +15,23 @@ public class MultiThreadedServer {
 
         System.out.println(MultiThreadedServer.class.getName());
         System.out.println("Hello World!");
-        ServerSocket ss = new ServerSocket(9000);
+        try (ServerSocket ss = new ServerSocket(9000)) {
 
-        while (true) {
-            try (Socket s = ss.accept()) {
+            while (true) {
+                Socket s = ss.accept();
 
-                System.out.println("We hebben een beller. "+ s.toString());
+                System.out.println("We hebben een beller. " + s.toString());
 
-                new Thread(()-> {
-                    handleSocket(s);
-                }).start();
-
-
-            } finally {
-                System.out.printf("Bye..");
+                new Thread(() -> handleSocket(s)).start();
             }
-           // System.exit(0);
+        } finally {
+            System.out.println("Going down...");
         }
     }
 
     private static void handleSocket(final Socket s) {
 
-        try {
+        try (s) {
             InputStream inp = s.getInputStream();
             OutputStream out = s.getOutputStream();
             int i = inp.read();
@@ -46,8 +41,9 @@ public class MultiThreadedServer {
             }
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        } finally {
+            System.out.println("Closed " + s);
         }
-
 
 
     }
