@@ -1,45 +1,46 @@
 package heinz.dijkrosoft.nl;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
  * Hello world!
- *
  */
-public class App 
-{
-    public static void main( String[] args ) throws IOException {
+public class App {
+    public static void main(String[] args) throws IOException {
 
         char b = 'b';
         System.out.println(b);
-        System.out.println( "Hello World!" );
+        System.out.println("Hello World!");
 
-        ServerSocket ss =  new ServerSocket(9000);
+        while (true) {
+            try (ServerSocket ss = new ServerSocket(9000); Socket s = ss.accept(); InputStream inp = s.getInputStream(); OutputStream out = s.getOutputStream()) {
 
-     //   Thread.currentThread().setDaemon(true);
+                int i = inp.read();
+                while (i != -1) {
+                    out.write(transmogrify(i));
+                    i = inp.read();
+                }
+                System.out.println("Exiting with " + i);
+            } finally {
+                System.out.printf("Bye..");
+            }
+            System.exit(0);
+        }
+    }
 
+    private static int transmogrify(final int i) {
+        if (Character.isLetter(i)) {
+            int x = i ^ ' ';
+            System.out.println(x);
+            return x;
+        } else {
 
-        while ( true) {
-            Socket s = ss.accept();
-
-//            s.getInputStream().transferTo(s.getOutputStream());
-
-           int i = s.getInputStream().read();
-           while ( i != 0 && i != 65) {
-               if ( Character.isAlphabetic(i)) {
-                   char a = Character.forDigit(i ^ ' ',10);
-                   System.out.println(a);
-                   System.out.println(a);
-               } else {
-    
-                   System.out.println("input is not alphabetic");
-               }
-               i = s.getInputStream().read();
-           }
-            System.out.println("Exiting with "+i);
-           System.exit(0);
+            System.out.println("input is not alphabetic: " + i);
+            return i;
         }
     }
 }
