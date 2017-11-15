@@ -1,4 +1,4 @@
-package heinz.dijkrosoft.nl;
+package nl.dijkrosoft.heinz;
 import java.io.Console;
 
 public class MyConsole {
