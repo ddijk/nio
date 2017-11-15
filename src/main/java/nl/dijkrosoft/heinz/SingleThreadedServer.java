@@ -12,9 +12,6 @@ import java.net.Socket;
 public class SingleThreadedServer {
     public static void main(String[] args) throws IOException {
 
-        char b = 'b';
-        System.out.println(b);
-        System.out.println("Hello World!");
         ServerSocket ss = new ServerSocket(9000);
 
         while (true) {
@@ -32,7 +29,6 @@ public class SingleThreadedServer {
             } finally {
                 System.out.printf("Bye..");
             }
-           // System.exit(0);
         }
     }
 
