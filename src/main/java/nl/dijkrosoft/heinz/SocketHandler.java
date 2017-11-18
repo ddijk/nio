@@ -1,8 +1,8 @@
 package nl.dijkrosoft.heinz;
 
-import java.net.Socket;
+import java.io.IOException;
 
 public interface SocketHandler {
 
-   void handleSocket(final Socket s);
+   void start()  throws IOException;
 }
