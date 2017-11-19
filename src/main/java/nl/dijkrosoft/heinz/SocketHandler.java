@@ -2,7 +2,7 @@ package nl.dijkrosoft.heinz;
 
 import java.io.IOException;
 
-public interface SocketHandler {
+public interface SocketHandler<S> {
 
-   void start()  throws IOException;
+    void handle(S s) throws IOException;
 }
